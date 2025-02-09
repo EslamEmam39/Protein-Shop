@@ -28,7 +28,7 @@ class CategoryController extends Controller
     
            $product = Category::create([
                'name' => $request->name,
-               'image' => $imagePath,
+               'image' => config("app.url")."/storage/".$imagePath,
            ]);
     
            return response()->json($product, 201);
