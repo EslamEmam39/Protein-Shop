@@ -41,8 +41,10 @@ class AuthController
         return response()->json(['message' => 'بيانات الدخول غير صحيحة'], 401);
     }
 
+
     return response()->json([
-        'token' => $user->createToken('API Token')->plainTextToken
+        'token' => $user->createToken('API Token')->plainTextToken,
+        'user' => $user
     ]);
 }
 

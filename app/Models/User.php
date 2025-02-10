@@ -24,7 +24,11 @@ class User extends Authenticatable
         'password',
          'role'
     ];
-
+ 
+    public function hasRole ($role)
+    {
+        return $this->role === $role;
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -48,6 +52,8 @@ class User extends Authenticatable
         ];
     }
 
+ 
+   
     public function cart()
 {
     return $this->hasMany(Cart::class);

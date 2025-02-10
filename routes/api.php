@@ -28,16 +28,13 @@ Route::middleware('auth:sanctum')->group(function () {
 // categories 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('categories',  CategoryController::class);
-});
-// brands 
-Route::middleware('auth:sanctum')->group(function () {
+    // brands 
     Route::apiResource('brands',  BrandController::class);
-});
 // products 
-Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('products', ProductController::class);
 });
-
+ 
+ 
 // related 
 Route::get('/products/{id}/related', [ProductController::class, 'relatedProducts']);
 
@@ -49,8 +46,9 @@ Route::delete('/tags/{id}', [TagController::class, 'destroy']);
 
 Route::post('/products/{id}/tags', [ProductController::class, 'attachTags']);
 // cart 
+
+Route::get('/cart', [CartController::class, 'index']);
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/cart', [CartController::class, 'index']);
     Route::post('/cart', [CartController::class, 'store']);
     Route::delete('/cart/{id}', [CartController::class, 'destroy']);
 });
@@ -65,6 +63,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
  // reviews 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/products/{product_id}/reviews', [ReviewController::class, 'store']);
+    
+});
+Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy']);
 });
 

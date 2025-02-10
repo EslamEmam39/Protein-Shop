@@ -22,7 +22,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Gate::define('update-post', [PostPolicy::class, 'update']);
-   
+        Gate::define('admin', function (User $user) {
+            return $user->hasRole('admin');
+        });
+
+        Gate::define('user', function ($user) {
+            return $user->hasRole('user');
+        });
+    
     }
 }
