@@ -12,40 +12,43 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      */
     public function index(){
-        $category = Category::all();
-        return response()->json($category , 200);
+        $categories = Category::all();
+        return view('admin.category.index' , compact('categories'));
+       }
+       public function add_category(){
+        return view('admin.category.add');
        }
     
        public function store(Request $request)
        {
-           $request->validate([
+          $request->validate([
                'name' => 'required|string|max:255',
                'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
            ]);
-    
+      
            $imagePath = $request->file('image') ? $request->file('image')
            ->store('Category', 'public') : null;
-    
-           $product = Category::create([
+          
+           $categories = Category::create([
                'name' => $request->name,
-               'image' => config("app.url")."/storage/".$imagePath,
+               'image' => $imagePath,
            ]);
     
-           return response()->json($product, 201);
+           return redirect()->route('all.categories' ,compact('categories'))
+           ->with('msg' , 'Category Added Successfully');
     }
     
-    public function show(Category $category)
+    public function show($id)
     {
-      
-            return response()->json($category, 200);
-      
+      $category = Category::find($id) ;
+     return view('admin.category.edit' ,compact('category'));
     
-
     }
     
   
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
+        $category = Category::findOrFail($id);
         $request->validate([
             'name' => 'sometimes|string|max:255',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:2048',
@@ -58,14 +61,15 @@ class CategoryController extends Controller
     
         $category->update($request->except('image'));
     
-        return response()->json($category,200);
+        return redirect()->route('all.categories')->with('msg' ,'Category Updated Successfully');
     }
     
-    public function destroy(Category $category)
+    public function destroy($id)
     {
+        $category =   Category::find($id);
         Storage::delete("public/{$category->image}");
         $category->delete();
     
-        return response()->json(['message' => 'تم حذف الفئة بنجاح'],204);
+        return redirect()->back()->with('msg' , 'Category Deleted Successfully');
     }
 }

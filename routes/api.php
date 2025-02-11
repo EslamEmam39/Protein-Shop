@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // categories 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('categories',  CategoryController::class);
+    // Route::apiResource('categories',  CategoryController::class);
     // brands 
     Route::apiResource('brands',  BrandController::class);
 // products 
